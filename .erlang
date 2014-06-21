@@ -1,0 +1,1 @@
+io:format("Current dir is ~p.~n", [file:get_cwd()]).
