@@ -1,5 +1,7 @@
 .PHONY: all compile deps clean test devrel rel
 
+REBAR=./rebar
+
 REBAR_CONFIG = rebar.config
 
 APP_NAME = erlang-book-fighter
@@ -7,17 +9,17 @@ APP_NAME = erlang-book-fighter
 all: clean deps test
 
 deps: get-deps update-deps
-	@./rebar -C $(REBAR_CONFIG) compile
+	@$(REBAR) -C $(REBAR_CONFIG) compile
 
 update-deps:
-	@./rebar -C $(REBAR_CONFIG) update-deps
+	@$(REBAR) -C $(REBAR_CONFIG) update-deps
 
 get-deps:
-	@./rebar -C $(REBAR_CONFIG) get-deps
+	@$(REBAR) -C $(REBAR_CONFIG) get-deps
 
 compile:
-	@./rebar -C $(REBAR_CONFIG) compile skip_deps=true
-	@./rebar -C $(REBAR_CONFIG) xref skip_deps=true
+	@$(REBAR) -C $(REBAR_CONFIG) compile skip_deps=true
+	@$(REBAR) -C $(REBAR_CONFIG) xref skip_deps=true
 
 devrel: rel
 	$(foreach dep,$(wildcard deps/*), rm -rf dev/$(APP_NAME)/lib/$(shell basename $(dep))-* && ln -sf $(abspath $(dep)) dev/$(APP_NAME)/lib;)
@@ -34,14 +36,14 @@ rel: compile
 
 test:
 	rm -rf .eunit
-	@./rebar -C $(REBAR_CONFIG) eunit skip_deps=true
+	@$(REBAR) -C $(REBAR_CONFIG) eunit skip_deps=true
 
 clean:
-	@./rebar -C $(REBAR_CONFIG) clean skip_deps=true
+	@$(REBAR) -C $(REBAR_CONFIG) clean skip_deps=true
 
 distclean: clean
-	@./rebar -C $(REBAR_CONFIG) clean
-	@./rebar -C $(REBAR_CONFIG) delete-deps
+	@$(REBAR) -C $(REBAR_CONFIG) clean
+	@$(REBAR) -C $(REBAR_CONFIG) delete-deps
 	rm -rf dev
 
 dialyze-init:
@@ -57,3 +59,6 @@ watch:
 	watchmedo shell-command --patterns="*.erl;*.hrl" \
                   --recursive --wait --command="make compile" \
                   src include test
+
+edoc:
+	@$(REBAR) doc
