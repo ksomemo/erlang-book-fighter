@@ -43,3 +43,4 @@ erl_crash.dump
 ## my ignore setting for Erlang
 rebar
 ebin
+.rebar/erlcinfo
