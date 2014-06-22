@@ -11,9 +11,17 @@
 
 %% API
 -export([
-  loop/0
-  , rpc/2
+  start/0
+  , area/2
 ]).
+
+-spec start() -> pid().
+start() ->
+  spawn(fun loop/0).
+
+-spec area(Pid::pid(), What::any()) -> any().
+area(Pid, What) ->
+  rpc(Pid, What).
 
 -spec loop() -> none().
 loop() ->
