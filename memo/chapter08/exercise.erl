@@ -11,10 +11,10 @@
 
 %% API
 -export([
-  ring_bench/2
+  ring_bench_hub/2
 ]).
 
-ring_bench(N, M) ->
+ring_bench_hub(N, M) ->
   Ring = create_ring(N),
 
   io:format("ring_bench(N=~p, M=~p) start.~n", [N, M]),
